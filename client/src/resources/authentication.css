@@ -3,7 +3,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-image: linear-gradient(to right, #30cfd0 0%, #330867 100%);
+    background-image: linear-gradient(to right, #30cfd0 0%, #ac85db 100%);
 }
 .lottie{
     height:400px;
