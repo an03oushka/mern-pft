@@ -1,6 +1,6 @@
-import React from "react";
 import { Progress } from "antd";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts"; // Importing necessary chart components
+import React from "react";
+import { Link } from "react-router-dom"; // Import Link
 import "../resources/analatics.css";
 
 function Analatics({ transactions }) {
@@ -44,21 +44,6 @@ function Analatics({ transactions }) {
     "tax",
   ];
 
-  // Prepare data for bar charts
-  const incomeData = categories.map((category) => {
-    const amount = transactions
-      .filter((t) => t.type === "income" && t.category === category)
-      .reduce((acc, t) => acc + t.amount, 0);
-    return { category, amount };
-  });
-
-  const expenseData = categories.map((category) => {
-    const amount = transactions
-      .filter((t) => t.type === "expence" && t.category === category)
-      .reduce((acc, t) => acc + t.amount, 0);
-    return { category, amount };
-  });
-
   return (
     <div className="analytics">
       <div className="row">
@@ -70,17 +55,22 @@ function Analatics({ transactions }) {
             <h5>Expence : {totalExpenceTransactions.length}</h5>
 
             <div className="progress-bars">
-              <Progress
-                className="mx-5"
-                strokeColor="#5DD64F"
-                type="circle"
-                percent={totalIncomeTransactionsPercentage.toFixed(0)}
-              />
-              <Progress
-                strokeColor="#E5572F"
-                type="circle"
-                percent={totalExpenceTransactionsPercentage.toFixed(0)}
-              />
+              {/* Add Link around Progress component */}
+              <Link to="/chart">
+                <Progress
+                  className="mx-5"
+                  strokeColor="#5DD64F"
+                  type="circle"
+                  percent={totalIncomeTransactionsPercentage.toFixed(0)}
+                />
+              </Link>
+              <Link to="/chart">
+                <Progress
+                  strokeColor="#E5572F"
+                  type="circle"
+                  percent={totalExpenceTransactionsPercentage.toFixed(0)}
+                />
+              </Link>
             </div>
           </div>
         </div>
@@ -93,22 +83,25 @@ function Analatics({ transactions }) {
             <h5>Expence : {totalExpenceTurnover}</h5>
 
             <div className="progress-bars">
-              <Progress
-                className="mx-5"
-                strokeColor="#5DD64F"
-                type="circle"
-                percent={totalIncomeTurnoverPercentage.toFixed(0)}
-              />
-              <Progress
-                strokeColor="#E5572F"
-                type="circle"
-                percent={totalExpenceTurnoverPercentage.toFixed(0)}
-              />
+              <Link to="/chart">
+                <Progress
+                  className="mx-5"
+                  strokeColor="#5DD64F"
+                  type="circle"
+                  percent={totalIncomeTurnoverPercentage.toFixed(0)}
+                />
+              </Link>
+              <Link to="/chart">
+                <Progress
+                  strokeColor="#E5572F"
+                  type="circle"
+                  percent={totalExpenceTurnoverPercentage.toFixed(0)}
+                />
+              </Link>
             </div>
           </div>
         </div>
       </div>
-
       <hr />
       <div className="row">
         <div className="col-md-6">
@@ -116,16 +109,18 @@ function Analatics({ transactions }) {
             <h4>Income - Category Wise</h4>
             {categories.map((category) => {
               const amount = transactions
-                .filter((t) => t.type === "income" && t.category === category)
+                .filter((t) => t.type == "income" && t.category === category)
                 .reduce((acc, t) => acc + t.amount, 0);
               return (
                 amount > 0 && (
-                  <div className="category-card" key={category}>
+                  <div className="category-card">
                     <h5>{category}</h5>
-                    <Progress
-                      strokeColor="#0B5AD9"
-                      percent={((amount / totalIncomeTurnover) * 100).toFixed(0)}
-                    />
+                    <Link to="/chart">
+                      <Progress
+                        strokeColor="#0B5AD9"
+                        percent={((amount / totalIncomeTurnover) * 100).toFixed(0)}
+                      />
+                    </Link>
                   </div>
                 )
               );
@@ -138,52 +133,23 @@ function Analatics({ transactions }) {
             <h4>Expence - Category Wise</h4>
             {categories.map((category) => {
               const amount = transactions
-                .filter((t) => t.type === "expence" && t.category === category)
+                .filter((t) => t.type == "expence" && t.category === category)
                 .reduce((acc, t) => acc + t.amount, 0);
               return (
                 amount > 0 && (
-                  <div className="category-card" key={category}>
+                  <div className="category-card">
                     <h5>{category}</h5>
-                    <Progress
-                      strokeColor="#0B5AD9"
-                      percent={((amount / totalExpenceTurnover) * 100).toFixed(0)}
-                    />
+                    <Link to="/chart">
+                      <Progress
+                        strokeColor="#0B5AD9"
+                        percent={((amount / totalExpenceTurnover) * 100).toFixed(0)}
+                      />
+                    </Link>
                   </div>
                 )
               );
             })}
           </div>
-        </div>
-      </div>
-
-      {/* New Graphs: Bar charts for Income and Expense by Category */}
-      <div className="row mt-4">
-        <div className="col-md-6">
-          <h4>Income by Category</h4>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={incomeData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="category" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="amount" fill="#5DD64F" />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-
-        <div className="col-md-6">
-          <h4>Expense by Category</h4>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={expenseData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="category" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="amount" fill="#E5572F" />
-            </BarChart>
-          </ResponsiveContainer>
         </div>
       </div>
     </div>

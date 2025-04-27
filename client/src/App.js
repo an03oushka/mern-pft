@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import Test from "./pages/Test";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Chart from "./pages/Chart"; 
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/test" element={<ProtectedRoute><Test /></ProtectedRoute>} />
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
+          <Route path="/chart" element={<Chart />} /> {/* Update to Chart */}
         </Routes>
       </BrowserRouter>
     </div>
